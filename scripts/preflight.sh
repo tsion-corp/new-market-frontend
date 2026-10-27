@@ -10,22 +10,22 @@ step() {
   echo -e "\n${BLUE}[$1] $2${NC}"
 }
 
-step "1/8" "Format"
+step "1/9" "Format"
 pnpm format:check
 
-step "2/8" "Lint"
+step "2/9" "Lint"
 pnpm lint
 
-step "3/8" "Comments"
+step "3/9" "Comments"
 pnpm comments:check
 
-step "4/8" "Typecheck"
+step "4/9" "Typecheck"
 pnpm typecheck
 
-step "5/8" "Unit tests"
+step "5/9" "Unit tests"
 pnpm test
 
-step "6/8" "Unused files, exports and dependencies"
+step "6/9" "Unused files, exports and dependencies"
 pnpm knip
 
 if [ "$MODE" = "--fast" ]; then
@@ -33,11 +33,14 @@ if [ "$MODE" = "--fast" ]; then
   exit 0
 fi
 
-step "7/8" "Cloudflare build (clean)"
+step "7/9" "Cloudflare build (clean)"
 rm -rf .next .open-next
 pnpm build:cloudflare
 
-step "8/8" "Lighthouse (mobile, every category 98 or more)"
+step "8/9" "Worker smoke test (Workers runtime)"
+pnpm smoke:worker
+
+step "9/9" "Lighthouse (mobile, every category 98 or more)"
 pnpm lighthouse
 
 echo -e "\n${GREEN}All preflight gates passed.${NC}"

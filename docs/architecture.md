@@ -97,10 +97,15 @@ When two features keep needing each other, they are one feature. Merge them; do 
 
 ## Rendering and caching
 
-Next.js 16.4 runs with Cache Components and Partial Prefetching on (see `next.config.ts`). Read `node_modules/next/dist/docs/01-app/01-getting-started/08-caching.md` before writing data code.
+**Cache Components are off.** On Cloudflare Workers they deadlock with Next.js 16.3 and later: the page render hangs until the runtime cancels it (HTTP 500). OpenNext's own test suite is pinned to Next 16.2 for this reason. Do not turn on `cacheComponents` or `partialPrefetching`, and do not use `"use cache"` or `cacheLife`, until OpenNext supports them on our Next version; turning them back on is an ADR, and `pnpm smoke:worker` must pass.
 
-- Cache data with `"use cache"` and a `cacheLife` profile; stream uncached data inside `<Suspense>` with a fallback that keeps layout stable.
-- The Worker runs without an incremental cache store (Workers Free plan, see `open-next.config.ts`). Adding R2, KV or Durable Objects is an ADR.
+The app uses the caching model Next.js documents as the previous model. Read `node_modules/next/dist/docs/01-app/02-guides/caching-without-cache-components.md` before writing data code.
+
+- Pages with no request-time data are prerendered at build time and served as static files.
+- `fetch` is uncached by default. Opt in per request with `cache: "force-cache"` or `next: { revalidate, tags }`; use `unstable_cache` for non-`fetch` work; invalidate with `revalidateTag` or `revalidatePath` from a Server Function.
+- **On the Worker those caches do not persist between requests.** The app runs on the Workers Free plan without an incremental cache store (see `open-next.config.ts`), so cached data and time-based revalidation live only as long as one request. Persistent server caching needs R2, KV or Durable Objects, and adding one is an ADR.
+- Stream slow, request-time data inside `<Suspense>` with a fallback that keeps layout stable.
+- Every change to rendering or caching config must pass `pnpm smoke:worker`, which runs the built Worker in the Workers runtime and requires a 200 on every route.
 
 ## Deployment
 
