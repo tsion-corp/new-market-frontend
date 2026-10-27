@@ -112,7 +112,7 @@ How to write one:
 ## Data and server code
 
 - Read data on the server, in the feature's `server/` folder, and pass it to components as props. Stream slow parts with `<Suspense>`.
-- Cache with `"use cache"` plus `cacheLife`; never cache user-specific data in a shared entry.
+- Cache with `fetch` options (`cache: "force-cache"`, `next: { revalidate, tags }`) or `unstable_cache`, and invalidate with `revalidateTag` or `revalidatePath`. Cache Components (`"use cache"`, `cacheLife`) are off because they deadlock on Workers; see [Rendering and caching](architecture.md#rendering-and-caching). Never cache user-specific data in a shared entry.
 - Write with Server Functions (`"use server"`) exposed through the feature's `server.ts`, called from `<form action>` or `startTransition`.
 - Validate every upstream response at the server boundary and map it into the feature's types before it goes anywhere else. Validate every input to a Server Function or route handler: it is a public endpoint.
 - One client per upstream service, in one place. No second client with its own base URL and error handling.

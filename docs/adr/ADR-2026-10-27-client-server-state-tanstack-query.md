@@ -8,7 +8,7 @@
 
 A market shows data that changes while the page is open: prices, order books, balances, positions, order status. Some of it must refresh on a timer or when the tab regains focus, some is paginated, and some changes optimistically when the user acts.
 
-Next.js 16 already covers data on the server: Server Components read it, `"use cache"` with `cacheLife` caches it, `revalidateTag` and `updateTag` invalidate it, and Server Functions write it. What it does not provide is a client-side cache: deduplicated requests across components, background refetching, polling, retries, pagination and optimistic updates in the browser. Without a library, every feature would rebuild that with `useEffect`, which the standards forbid for data fetching.
+Next.js 16 already covers data on the server: Server Components read it, `fetch` cache options and `unstable_cache` cache it, `revalidateTag` and `revalidatePath` invalidate it, and Server Functions write it. On our Workers Free setup those server caches last only one request, which makes a client-side cache more valuable, not less. What it does not provide is a client-side cache: deduplicated requests across components, background refetching, polling, retries, pagination and optimistic updates in the browser. Without a library, every feature would rebuild that with `useEffect`, which the standards forbid for data fetching.
 
 ## Options considered
 
@@ -20,7 +20,7 @@ Next.js 16 already covers data on the server: Server Components read it, `"use c
 
 Use TanStack Query v5 for **client-side server state only**.
 
-- Server reads stay in Server Components and feature `server/` modules, cached with `"use cache"`. TanStack Query does not replace Next.js caching.
+- Server reads stay in Server Components and feature `server/` modules, using Next.js `fetch` caching where it helps. TanStack Query does not replace Next.js caching.
 - TanStack Query is used when data must live and refresh in the browser: polling, refetch on focus or reconnect, pagination and infinite lists, optimistic mutations, data shared by several client components.
 - Install `@tanstack/react-query` and `@tanstack/eslint-plugin-query` (exact versions) in the pull request of the first feature that needs it, not before.
 - One `getQueryClient()` in `src/lib/query-client.ts`: a new client per request on the server, one shared client in the browser, default `staleTime` of 60 seconds.

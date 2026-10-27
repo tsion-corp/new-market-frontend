@@ -24,7 +24,7 @@ Tsion Market is a new frontend in a new repository. The previous frontend used a
 
 ## Decision
 
-- Next.js 16.4 with the `create-next-app` defaults: App Router, `src/` directory, TypeScript strict, Tailwind CSS v4 through the Turbopack loader, Cache Components and Partial Prefetching on, React Compiler on.
+- Next.js 16.4 with App Router, `src/` directory, TypeScript strict, Tailwind CSS v4 through the Turbopack loader, React Compiler on, and `experimental.inlineCss` on (measured: FCP 0.8 s to 0.6 s on mobile). Cache Components and Partial Prefetching, which `create-next-app` turns on, are off: they deadlock on Cloudflare Workers with Next 16.3 and later (found on the first staging deploy; `pnpm smoke:worker` now guards it).
 - Feature-based architecture with one-way layers. Features are imported only through `index.ts` or `server.ts`. ESLint (`eslint-plugin-boundaries`) enforces it with a default-deny policy. Detail in `docs/architecture.md`.
 - shadcn/ui (Radix base, Nova preset) with the Vengeance UI theme tokens and the `@vengeanceui` registry. Components are added when first used.
 - System font stack. Measured: Geist via `next/font` added about 30 KB to the LCP path and held mobile Performance at 99.
@@ -53,7 +53,7 @@ Tsion Market is a new frontend in a new repository. The previous frontend used a
 
 - Better: architecture and comment rules are checked by machines, not memory; unused code and packages fail CI; performance regressions fail CI.
 - Costs: Lighthouse in CI adds a few minutes per PR; the default-deny lint policy means each new top-level folder needs an architecture update first; brand typography needs a measured case before a web font is added.
-- `experimental.inlineCss` was tried and dropped: it improved FCP but not the score. `vengeanceui init` (agent skill and MCP) is documented upstream but not published on npm, so it is not installed.
+- `vengeanceui init` (agent skill and MCP) is documented upstream but not published on npm, so it is not installed.
 
 ## Verification
 

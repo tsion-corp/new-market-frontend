@@ -59,25 +59,26 @@ If the hooks are missing (for example after cloning with `--no-checkout`), run `
 
 ## Project scripts
 
-| Script                    | What it does                                                          |
-| ------------------------- | --------------------------------------------------------------------- |
-| `pnpm dev`                | Next.js dev server with Turbopack                                     |
-| `pnpm build`              | Production build                                                      |
-| `pnpm start`              | Serve the production build                                            |
-| `pnpm format`             | Format everything with Prettier                                       |
-| `pnpm format:check`       | Check formatting only                                                 |
-| `pnpm lint`               | ESLint, including the architecture boundaries, with zero warnings     |
-| `pnpm lint:fix`           | ESLint with autofix                                                   |
-| `pnpm typecheck`          | Generate route types and run `tsc --noEmit`                           |
-| `pnpm test`               | Vitest, once                                                          |
-| `pnpm test:watch`         | Vitest in watch mode                                                  |
-| `pnpm knip`               | Unused files, exports and dependencies                                |
-| `pnpm comments:check`     | The comment rules                                                     |
-| `pnpm lighthouse`         | Lighthouse CI on a production build; every category must be 98 to 100 |
-| `pnpm preflight`          | All of the above plus the Cloudflare build                            |
-| `pnpm build:cloudflare`   | Build the Worker with OpenNext                                        |
-| `pnpm preview:cloudflare` | Build and run the Worker locally in the Workers runtime               |
-| `pnpm deploy:cloudflare`  | Build and deploy from your machine (CI deploys normally; see below)   |
+| Script                    | What it does                                                             |
+| ------------------------- | ------------------------------------------------------------------------ |
+| `pnpm dev`                | Next.js dev server with Turbopack                                        |
+| `pnpm build`              | Production build                                                         |
+| `pnpm start`              | Serve the production build                                               |
+| `pnpm format`             | Format everything with Prettier                                          |
+| `pnpm format:check`       | Check formatting only                                                    |
+| `pnpm lint`               | ESLint, including the architecture boundaries, with zero warnings        |
+| `pnpm lint:fix`           | ESLint with autofix                                                      |
+| `pnpm typecheck`          | Generate route types and run `tsc --noEmit`                              |
+| `pnpm test`               | Vitest, once                                                             |
+| `pnpm test:watch`         | Vitest in watch mode                                                     |
+| `pnpm knip`               | Unused files, exports and dependencies                                   |
+| `pnpm comments:check`     | The comment rules                                                        |
+| `pnpm lighthouse`         | Lighthouse CI on a production build; every category must be 98 to 100    |
+| `pnpm preflight`          | All of the above plus the Cloudflare build                               |
+| `pnpm build:cloudflare`   | Build the Worker with OpenNext                                           |
+| `pnpm smoke:worker`       | Run the built Worker in the Workers runtime; every route must return 200 |
+| `pnpm preview:cloudflare` | Build and run the Worker locally in the Workers runtime                  |
+| `pnpm deploy:cloudflare`  | Build and deploy from your machine (CI deploys normally; see below)      |
 
 ## Where code goes
 
@@ -180,11 +181,11 @@ Keep commits atomic: one logical change each. AI tools never co-author a commit:
 
 Three layers, from fastest to slowest:
 
-| When         | What runs                                                               | Configured in              |
-| ------------ | ----------------------------------------------------------------------- | -------------------------- |
-| commit       | Prettier and ESLint on staged files, comment rules, commit message lint | `lefthook.yml`             |
-| push         | `pnpm preflight --fast`: format, lint, comments, typecheck, tests, knip | `lefthook.yml`             |
-| pull request | Everything above, the Cloudflare build, Lighthouse, and a secret scan   | `.github/workflows/ci.yml` |
+| When         | What runs                                                                                                        | Configured in              |
+| ------------ | ---------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| commit       | Prettier and ESLint on staged files, comment rules, commit message lint                                          | `lefthook.yml`             |
+| push         | `pnpm preflight --fast`: format, lint, comments, typecheck, tests, knip                                          | `lefthook.yml`             |
+| pull request | Everything above, the Cloudflare build, the Worker smoke test, Lighthouse, a branch flow check and a secret scan | `.github/workflows/ci.yml` |
 
 Do not bypass hooks with `--no-verify`. If a hook is wrong, fix the hook in its own PR.
 
