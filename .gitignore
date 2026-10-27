@@ -51,3 +51,6 @@ next-env.d.ts
 
 # lint cache
 .eslintcache
+
+# worktrees
+/.worktrees/

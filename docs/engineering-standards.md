@@ -57,30 +57,32 @@ Read before you write. Nobody, human or agent, changes code they have not read.
 
 The React Compiler is on (`reactCompiler: true`). It memoizes components and hooks automatically, which changes which hooks you reach for. Pick the hook that matches the job. The wrong hook is a review comment even when the code works.
 
-| The job                                                                             | Use                                               | Not                                                              |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------- |
-| One independent piece of UI state                                                   | `useState`                                        |                                                                  |
-| Several related values, or the next state depends on an action                      | `useReducer` with a typed action union            | several `useState` calls updated together                        |
-| A value computed from props or state                                                | compute it during render                          | `useState` + `useEffect` (lint: `no-deriving-state-in-effects`)  |
-| Expensive computation                                                               | compute during render; the compiler memoizes      | manual `useMemo`, unless profiling shows the compiler bailed out |
-| Stable callbacks for children                                                       | plain functions; the compiler memoizes            | manual `useCallback` by default                                  |
-| Reading context                                                                     | `use(Context)`                                    | `useContext` in new code (`use` also works conditionally)        |
-| Reading a promise passed from a Server Component                                    | `use(promise)` inside `<Suspense>`                | `useEffect` + `useState` loading flags                           |
-| Form submit that calls a Server Function                                            | `<form action>` + `useActionState`                | `onSubmit` + manual pending and error state                      |
-| Pending state of the enclosing form                                                 | `useFormStatus` in a child of the form            | prop-drilling `isPending`                                        |
-| Show the result before the server confirms                                          | `useOptimistic`                                   | copying server data into local state                             |
-| Keep the UI responsive during a slow update                                         | `useTransition` / `startTransition`               | debouncing state by hand                                         |
-| A fast-changing input driving an expensive render (search, filters)                 | `useDeferredValue`                                | `setTimeout` debounce in an effect                               |
-| Subscribe to something outside React (media query, online status, storage, a store) | `useSyncExternalStore`                            | `useEffect` + `useState` mirror                                  |
-| Synchronise with an external system (socket, chart instance, observer)              | `useEffect` with a cleanup                        | anything that is not an external system                          |
-| Non-reactive logic read inside an effect (latest props in a handler)                | `useEffectEvent`                                  | adding the value to deps, or a ref you update by hand            |
-| Measure layout before paint                                                         | `useLayoutEffect`                                 | `useEffect` + flicker                                            |
-| A mutable value that must not re-render (timer id, DOM node, instance)              | `useRef`                                          | `useState`                                                       |
-| Accessible ids linking label, input and description                                 | `useId`                                           | hard-coded or random ids                                         |
-| A parent calling methods on a child                                                 | `useImperativeHandle` with the `ref` prop, rarely | exposing internals by default                                    |
-| Hide part of the tree but keep its state                                            | `<Activity mode="hidden">`                        | unmounting and re-fetching                                       |
-| Animated route or state change                                                      | `<ViewTransition>` where it fits                  | a motion library for a simple cross-fade                         |
-| Insert styles before layout (CSS-in-JS libraries only)                              | `useInsertionEffect`                              | application code                                                 |
+| The job                                                                             | Use                                                                                                     | Not                                                              |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| One independent piece of UI state                                                   | `useState`                                                                                              |                                                                  |
+| Several related values, or the next state depends on an action                      | `useReducer` with a typed action union                                                                  | several `useState` calls updated together                        |
+| A value computed from props or state                                                | compute it during render                                                                                | `useState` + `useEffect` (lint: `no-deriving-state-in-effects`)  |
+| Expensive computation                                                               | compute during render; the compiler memoizes                                                            | manual `useMemo`, unless profiling shows the compiler bailed out |
+| Stable callbacks for children                                                       | plain functions; the compiler memoizes                                                                  | manual `useCallback` by default                                  |
+| Reading context                                                                     | `use(Context)`                                                                                          | `useContext` in new code (`use` also works conditionally)        |
+| Reading a promise passed from a Server Component                                    | `use(promise)` inside `<Suspense>`                                                                      | `useEffect` + `useState` loading flags                           |
+| Server data that must refresh in the browser (polling, focus refetch, pagination)   | a feature hook over TanStack Query (`useQuery`, `useSuspenseQuery`, `useInfiniteQuery`)                 | `useEffect` + `fetch`, `setInterval` refetching                  |
+| A write that updates cached server data                                             | a feature hook over `useMutation` calling a Server Function, then `setQueryData` or `invalidateQueries` | refetching the page by hand                                      |
+| Form submit that calls a Server Function                                            | `<form action>` + `useActionState`                                                                      | `onSubmit` + manual pending and error state                      |
+| Pending state of the enclosing form                                                 | `useFormStatus` in a child of the form                                                                  | prop-drilling `isPending`                                        |
+| Show the result before the server confirms                                          | `useOptimistic`                                                                                         | copying server data into local state                             |
+| Keep the UI responsive during a slow update                                         | `useTransition` / `startTransition`                                                                     | debouncing state by hand                                         |
+| A fast-changing input driving an expensive render (search, filters)                 | `useDeferredValue`                                                                                      | `setTimeout` debounce in an effect                               |
+| Subscribe to something outside React (media query, online status, storage, a store) | `useSyncExternalStore`                                                                                  | `useEffect` + `useState` mirror                                  |
+| Synchronise with an external system (socket, chart instance, observer)              | `useEffect` with a cleanup                                                                              | anything that is not an external system                          |
+| Non-reactive logic read inside an effect (latest props in a handler)                | `useEffectEvent`                                                                                        | adding the value to deps, or a ref you update by hand            |
+| Measure layout before paint                                                         | `useLayoutEffect`                                                                                       | `useEffect` + flicker                                            |
+| A mutable value that must not re-render (timer id, DOM node, instance)              | `useRef`                                                                                                | `useState`                                                       |
+| Accessible ids linking label, input and description                                 | `useId`                                                                                                 | hard-coded or random ids                                         |
+| A parent calling methods on a child                                                 | `useImperativeHandle` with the `ref` prop, rarely                                                       | exposing internals by default                                    |
+| Hide part of the tree but keep its state                                            | `<Activity mode="hidden">`                                                                              | unmounting and re-fetching                                       |
+| Animated route or state change                                                      | `<ViewTransition>` where it fits                                                                        | a motion library for a simple cross-fade                         |
+| Insert styles before layout (CSS-in-JS libraries only)                              | `useInsertionEffect`                                                                                    | application code                                                 |
 
 Effects are a last resort, not a lifecycle. Before writing `useEffect`, check: is this derived data (compute it), an event response (put it in the handler), data fetching (do it on the server or with `use`), or an external subscription (`useSyncExternalStore`)? Only a real external system gets an effect. Setting state synchronously in an effect is a lint error (`react-hooks/set-state-in-effect`).
 
@@ -115,7 +117,12 @@ How to write one:
 - Validate every upstream response at the server boundary and map it into the feature's types before it goes anywhere else. Validate every input to a Server Function or route handler: it is a public endpoint.
 - One client per upstream service, in one place. No second client with its own base URL and error handling.
 - Environment variables are read in one typed module, validated at startup, never with `process.env.X` scattered across files.
-- Client-side server state (polling, live updates) needs a library decision recorded in an ADR before the first use.
+- Client-side server state uses **TanStack Query** (see [the ADR](adr/ADR-2026-10-27-client-server-state-tanstack-query.md)). It is for data that must live and refresh in the browser: polling, refetch on focus, pagination, optimistic mutations, data shared by several client components. Everything else is read and cached on the server; never use both for the same data without a reason in the PR.
+  - Queries are `queryOptions` factories in `features/<name>/queries.ts`, keys starting with the feature name.
+  - Components reach them only through a named custom hook (`useMarketPrice`), never `useQuery` inline.
+  - `queryFn` calls our own route handlers; mutations call Server Functions through `useMutation` and update or invalidate the affected queries.
+  - The provider lives in the layout of the route group that needs it, not the root layout.
+  - Install `@tanstack/react-query` and `@tanstack/eslint-plugin-query` with the first feature that uses them.
 
 ## Styling and UI kit
 
@@ -129,12 +136,12 @@ How to write one:
 
 ## Performance and Lighthouse
 
-Every page scores **100 in Performance, Accessibility, Best Practices and SEO** in a Lighthouse mobile run. CI enforces it (`pnpm lighthouse`, see `lighthouserc.json`); add each new route to its URL list.
+Every page scores **98 to 100 in Performance, Accessibility, Best Practices and SEO** in a Lighthouse mobile run. Below 98 in any category fails CI; aim for 100. CI enforces it (`pnpm lighthouse`, see `lighthouserc.json`); add each new route to its URL list.
 
 - Server Components first. Client JavaScript is the main cost on a mid-range phone; ship as little as possible.
 - No client component above a layout boundary unless the whole subtree needs it.
 - Heavy client code (charts, editors, motion-heavy sections) loads with `next/dynamic` or after interaction.
-- The system font stack is the default. A web font costs about 30 KB on the LCP path; add one only through `next/font`, with `display: "swap"`, and only with a Lighthouse run in the PR proving the page still scores 100.
+- The system font stack is the default. A web font costs about 30 KB on the LCP path; add one only through `next/font`, with `display: "swap"`, and only with a Lighthouse run in the PR proving the page still scores 98 or more.
 - Images through `next/image` with explicit `width`/`height` or `fill` plus `sizes`; `priority` only on the largest above-the-fold image. Decide the Cloudflare image strategy in an ADR before the first raster image.
 - No layout shift: reserve space for anything that loads late, including Suspense fallbacks.
 - Third-party scripts through `next/script` with `lazyOnload` or `afterInteractive`, and only after an ADR.

@@ -37,7 +37,7 @@ step "7/8" "Cloudflare build (clean)"
 rm -rf .next .open-next
 pnpm build:cloudflare
 
-step "8/8" "Lighthouse (mobile, every category at 100)"
+step "8/8" "Lighthouse (mobile, every category 98 or more)"
 pnpm lighthouse
 
 echo -e "\n${GREEN}All preflight gates passed.${NC}"

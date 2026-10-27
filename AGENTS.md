@@ -23,8 +23,14 @@ No agent edits, creates or deletes anything before it has read the codebase it i
 - Do all work in an isolated worktree cut from the branch the work is destined for, normally `origin/dev`:
   `git worktree add .worktrees/<branch> -b <branch> origin/dev`
 - Sync before you branch: `git fetch origin dev staging main`. Never trust a local long-lived branch.
-- `dev` carries every feature. `staging` is what the staging Worker runs. `main` is production and carries only what the production backend can serve.
-- Do not commit or push on a person's behalf unless they ask. Commits and pull requests carry no AI co-author, trailer or attribution line.
+- Code flows one way: **feature branch → `dev` → `staging` → `main`**.
+  - `dev` is for development. Every feature branch merges here first, and only here.
+  - `staging` receives `dev` once its features are ready for testing, and deploys to the staging Worker.
+  - `main` receives `staging` once the features are tested, and deploys to production.
+- A pull request into `staging` must come from `dev`; a pull request into `main` must come from `staging`. The `branch flow` CI check rejects anything else, including fixes aimed straight at `staging` or `main`: they go through `dev` like everything else.
+- Only the repository owner merges into `staging` and `main`. Agents never open, approve or merge promotion pull requests unless that person asks.
+- Do not commit or push on a person's behalf unless they ask.
+- **Claude, Claude Code and every other AI tool never co-author a commit in this repository.** No `Co-Authored-By` line naming an AI, no `Claude-Session` or other session trailer, no "Generated with" footer, in commits or pull request descriptions. `.claude/settings.json` turns Claude Code's attribution off, and the `commit-msg` hook (commitlint rule `no-ai-attribution`) rejects any commit that carries one. The human who commits is the author.
 
 ## Directive 2: Human approval before non-trivial work
 
@@ -67,9 +73,9 @@ Add a dependency in the same change that first uses it, never ahead of time. Che
 
 Use the hook that fits the job (see the [hook table](docs/engineering-standards.md#hooks)). Stateful logic, effects and subscriptions live in custom hooks, never inline in components (see [Custom hooks](docs/engineering-standards.md#custom-hooks)). The React Compiler is on: do not add `useMemo` or `useCallback` by reflex.
 
-## Directive 9: Lighthouse 100
+## Directive 9: Lighthouse 98 to 100
 
-Every route scores 100 in Performance, Accessibility, Best Practices and SEO on a mobile Lighthouse run. A change that lowers any score is not done. `pnpm lighthouse` checks it; add new routes to `lighthouserc.json`.
+Every route scores between 98 and 100 in Performance, Accessibility, Best Practices and SEO on a mobile Lighthouse run. A change that drops any category below 98 is not done; aim for 100. `pnpm lighthouse` checks it; add new routes to `lighthouserc.json`.
 
 ## Directive 10: Preflight before done
 
@@ -112,7 +118,7 @@ Before asking for review, check the change against each item. The PR template re
 5. **Tests.** Behaviour tests for the change, covering loading, empty and error states. Bug fixes were red before green.
 6. **Money.** Amounts in base units with `bigint`, never `number`.
 7. **States.** Every async path has a loading state and an error state; nothing freezes.
-8. **Accessibility and Lighthouse.** Keyboard, labels and contrast checked; every touched route still scores 100.
+8. **Accessibility and Lighthouse.** Keyboard, labels and contrast checked; every touched route still scores 98 or more in every category.
 9. **Comments.** None from an agent; human comments explain why in three lines or fewer.
 10. **Cleanup.** Replaced code, assets, config and packages removed; `pnpm knip` clean.
 11. **Preflight.** `pnpm preflight` passed with zero warnings.

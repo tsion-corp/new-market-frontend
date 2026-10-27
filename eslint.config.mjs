@@ -14,6 +14,7 @@ export default defineConfig([
     ".wrangler/**",
     ".lighthouseci/**",
     "coverage/**",
+    ".worktrees/**",
     "next-env.d.ts",
   ]),
   {

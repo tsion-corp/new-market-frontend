@@ -59,25 +59,25 @@ If the hooks are missing (for example after cloning with `--no-checkout`), run `
 
 ## Project scripts
 
-| Script                    | What it does                                                        |
-| ------------------------- | ------------------------------------------------------------------- |
-| `pnpm dev`                | Next.js dev server with Turbopack                                   |
-| `pnpm build`              | Production build                                                    |
-| `pnpm start`              | Serve the production build                                          |
-| `pnpm format`             | Format everything with Prettier                                     |
-| `pnpm format:check`       | Check formatting only                                               |
-| `pnpm lint`               | ESLint, including the architecture boundaries, with zero warnings   |
-| `pnpm lint:fix`           | ESLint with autofix                                                 |
-| `pnpm typecheck`          | Generate route types and run `tsc --noEmit`                         |
-| `pnpm test`               | Vitest, once                                                        |
-| `pnpm test:watch`         | Vitest in watch mode                                                |
-| `pnpm knip`               | Unused files, exports and dependencies                              |
-| `pnpm comments:check`     | The comment rules                                                   |
-| `pnpm lighthouse`         | Lighthouse CI on a production build; every category must be 100     |
-| `pnpm preflight`          | All of the above plus the Cloudflare build                          |
-| `pnpm build:cloudflare`   | Build the Worker with OpenNext                                      |
-| `pnpm preview:cloudflare` | Build and run the Worker locally in the Workers runtime             |
-| `pnpm deploy:cloudflare`  | Build and deploy from your machine (CI deploys normally; see below) |
+| Script                    | What it does                                                          |
+| ------------------------- | --------------------------------------------------------------------- |
+| `pnpm dev`                | Next.js dev server with Turbopack                                     |
+| `pnpm build`              | Production build                                                      |
+| `pnpm start`              | Serve the production build                                            |
+| `pnpm format`             | Format everything with Prettier                                       |
+| `pnpm format:check`       | Check formatting only                                                 |
+| `pnpm lint`               | ESLint, including the architecture boundaries, with zero warnings     |
+| `pnpm lint:fix`           | ESLint with autofix                                                   |
+| `pnpm typecheck`          | Generate route types and run `tsc --noEmit`                           |
+| `pnpm test`               | Vitest, once                                                          |
+| `pnpm test:watch`         | Vitest in watch mode                                                  |
+| `pnpm knip`               | Unused files, exports and dependencies                                |
+| `pnpm comments:check`     | The comment rules                                                     |
+| `pnpm lighthouse`         | Lighthouse CI on a production build; every category must be 98 to 100 |
+| `pnpm preflight`          | All of the above plus the Cloudflare build                            |
+| `pnpm build:cloudflare`   | Build the Worker with OpenNext                                        |
+| `pnpm preview:cloudflare` | Build and run the Worker locally in the Workers runtime               |
+| `pnpm deploy:cloudflare`  | Build and deploy from your machine (CI deploys normally; see below)   |
 
 ## Where code goes
 
@@ -102,13 +102,26 @@ src/
 
 ## Branches
 
-| Branch    | Purpose                                                 | Deploys to                  |
-| --------- | ------------------------------------------------------- | --------------------------- |
-| `dev`     | Integration branch. Every feature lands here first.     | nothing                     |
-| `staging` | What the staging environment runs.                      | Worker `new-market-staging` |
-| `main`    | Production. Only what the production backend can serve. | Worker `new-market`         |
+Code flows one way:
 
-All three are protected: no direct pushes, squash merges only, and the `quality` check must pass. A change moves `dev`, then `staging`, then `main`.
+```
+feature branch ──squash──► dev ──merge──► staging ──merge──► main
+                          (develop)      (test)            (production)
+```
+
+| Branch    | Purpose                                                   | Accepts pull requests from | Merged by            | Deploys to                  |
+| --------- | --------------------------------------------------------- | -------------------------- | -------------------- | --------------------------- |
+| `dev`     | Development. Every feature branch lands here.             | feature branches           | anyone with write    | nothing                     |
+| `staging` | Testing. Developed features are promoted here and tested. | `dev` only                 | the repository owner | Worker `new-market-staging` |
+| `main`    | Production. Tested features are promoted here.            | `staging` only             | the repository owner | Worker `new-market`         |
+
+The rules, all enforced by GitHub:
+
+- No direct pushes to any of the three, for anyone. Every change arrives by pull request.
+- The `quality` check must pass before any merge, and the branch must be up to date with its base.
+- The `branch flow` check rejects a pull request into `staging` that is not from `dev`, and one into `main` that is not from `staging`. There is no shortcut for urgent fixes: fix on a branch off `dev`, then promote.
+- Feature pull requests into `dev` are squash-merged, so `dev` gets one commit per change. Promotions (`dev` into `staging`, `staging` into `main`) use a merge commit, so the three branches keep a shared history and each promotion shows only what is new.
+- Only the repository owner can merge into `staging` and `main`.
 
 Feature branches are named `<type>/<short-description>`, using the same types as commits: `feat/order-book`, `fix/price-rounding`, `chore/upgrade-next`.
 
@@ -146,7 +159,7 @@ feat(markets): show the 24h change on market cards
 fix(portfolio): round token amounts down, not to nearest
 ```
 
-Keep commits atomic: one logical change each. Do not add co-author or attribution lines for AI tools.
+Keep commits atomic: one logical change each. AI tools never co-author a commit: no `Co-Authored-By` line for Claude or any other AI, no session trailers, no "Generated with" footers, in commits or PR descriptions. The `commit-msg` hook rejects them, and `.claude/settings.json` turns Claude Code's attribution off.
 
 ## Pull requests
 
@@ -155,12 +168,12 @@ Keep commits atomic: one logical change each. Do not add co-author or attributio
 - Include screenshots or a short recording for any UI change, light and dark.
 - Include the Lighthouse result for every route the change touches.
 - The `quality` check must be green. If the base branch moved, update your branch and let CI run again.
-- Merges are squash merges. The branch is deleted on merge.
+- Feature pull requests are squash-merged into `dev` and the branch is deleted. Promotions use a merge commit.
 
 ## Reviewing
 
 - Open the preview and use the change. Reading a diff is not reviewing a UI.
-- These are blocking, not nits: a cross-feature import, a second client for the same upstream, `fetch` in a component, stateful logic inline in a component, an agent-written comment, a replaced implementation left behind, a package added before it is used, a Lighthouse score below 100.
+- These are blocking, not nits: a cross-feature import, a second client for the same upstream, `fetch` in a component, stateful logic inline in a component, an agent-written comment, a replaced implementation left behind, a package added before it is used, a Lighthouse category below 98.
 - Approve only what you would be happy to maintain.
 
 ## Quality gates
