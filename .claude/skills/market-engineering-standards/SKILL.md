@@ -22,5 +22,5 @@ Non-negotiables to keep in view while working:
 - A replaced implementation is deleted in the same change, with its packages.
 - No package is added before the code that uses it.
 - Stateful logic lives in custom hooks; pick the hook from the table.
-- Every route scores 100 on mobile Lighthouse.
+- Every route scores 98 to 100 in every category on mobile Lighthouse.
 - `pnpm preflight` passes before you call anything done.
