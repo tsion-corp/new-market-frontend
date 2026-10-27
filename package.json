@@ -18,6 +18,7 @@
     "lighthouse": "lhci autorun",
     "preflight": "./scripts/preflight.sh",
     "build:cloudflare": "opennextjs-cloudflare build",
+    "smoke:worker": "./scripts/worker-smoke.sh",
     "preview:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "prepare": "lefthook install"

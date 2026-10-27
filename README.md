@@ -24,14 +24,14 @@ Open http://localhost:3000.
 
 ## Stack
 
-| Concern         | Choice                                                                         |
-| --------------- | ------------------------------------------------------------------------------ |
-| Framework       | Next.js 16.4, App Router, Cache Components, React 19.3 with the React Compiler |
-| Language        | TypeScript, strict                                                             |
-| Styling         | Tailwind CSS v4                                                                |
-| UI              | shadcn/ui, Vengeance UI registry and theme                                     |
-| Tests           | Vitest, Testing Library                                                        |
-| Quality         | ESLint with architecture boundaries, Prettier, knip, Lighthouse CI             |
-| Git hooks       | Lefthook, commitlint                                                           |
-| Hosting         | Cloudflare Workers via OpenNext                                                |
-| Package manager | pnpm                                                                           |
+| Concern         | Choice                                                             |
+| --------------- | ------------------------------------------------------------------ |
+| Framework       | Next.js 16.4, App Router, React 19.3 with the React Compiler       |
+| Language        | TypeScript, strict                                                 |
+| Styling         | Tailwind CSS v4                                                    |
+| UI              | shadcn/ui, Vengeance UI registry and theme                         |
+| Tests           | Vitest, Testing Library                                            |
+| Quality         | ESLint with architecture boundaries, Prettier, knip, Lighthouse CI |
+| Git hooks       | Lefthook, commitlint                                               |
+| Hosting         | Cloudflare Workers via OpenNext                                    |
+| Package manager | pnpm                                                               |

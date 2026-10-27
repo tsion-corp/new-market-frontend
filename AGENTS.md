@@ -79,7 +79,7 @@ Every route scores between 98 and 100 in Performance, Accessibility, Best Practi
 
 ## Directive 10: Preflight before done
 
-Before you open a pull request or call a task complete, run `pnpm preflight` and get a clean pass: format, lint, comments, typecheck, tests, knip, Cloudflare build and Lighthouse. Zero errors, zero warnings. Then run the app and use the change yourself. Report anything you could not verify.
+Before you open a pull request or call a task complete, run `pnpm preflight` and get a clean pass: format, lint, comments, typecheck, tests, knip, Cloudflare build, Worker smoke test and Lighthouse. Zero errors, zero warnings. Then run the app and use the change yourself. Report anything you could not verify.
 
 ## Directive 11: Use the tools you have
 
