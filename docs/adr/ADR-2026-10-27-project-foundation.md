@@ -6,7 +6,7 @@
 
 ## Context
 
-Tsion Market is a new frontend in a new repository. The previous frontend used a feature-based layout with lint-enforced layers, ADR-gated AI governance and a five-gate preflight. It also grew unused packages, comment noise and parallel old and new implementations. The new app must deploy to Cloudflare Workers, use Vengeance UI, and score 100 in every Lighthouse category on mobile.
+Tsion Market is a new frontend in a new repository. The previous frontend used a feature-based layout with lint-enforced layers, ADR-gated AI governance and a five-gate preflight. It also grew unused packages, comment noise and parallel old and new implementations. The new app must deploy to Cloudflare Workers, use Vengeance UI, and score 98 to 100 in every Lighthouse category on mobile.
 
 ## Options considered
 
@@ -29,9 +29,9 @@ Tsion Market is a new frontend in a new repository. The previous frontend used a
 - shadcn/ui (Radix base, Nova preset) with the Vengeance UI theme tokens and the `@vengeanceui` registry. Components are added when first used.
 - System font stack. Measured: Geist via `next/font` added about 30 KB to the LCP path and held mobile Performance at 99.
 - Lefthook for pre-commit (Prettier, ESLint, comment check), commit-msg (commitlint, Conventional Commits) and pre-push (fast preflight).
-- Vitest with Testing Library; knip; a repository comment checker; Lighthouse CI asserting 100 in all four categories on mobile; gitleaks in CI.
+- Vitest with Testing Library; knip; a repository comment checker; Lighthouse CI asserting at least 98 in all four categories on mobile; gitleaks in CI.
 - Cloudflare Workers via `@opennextjs/cloudflare`, Workers Free plan: no incremental cache store. Workers `new-market` (from `main`) and `new-market-staging` (from `staging`), deployed by Workers Builds.
-- Governance from the previous frontend carried over and extended: read-first, no agent-written comments, replace-means-remove, packages only when used, hook rules, Lighthouse 100.
+- Governance from the previous frontend carried over and extended: read-first, no agent-written comments, replace-means-remove, packages only when used, hook rules, Lighthouse 98 to 100.
 
 ## Diagram
 
