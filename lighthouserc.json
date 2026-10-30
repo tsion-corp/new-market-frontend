@@ -13,7 +13,8 @@
           "height": 823,
           "deviceScaleFactor": 1.75
         },
-        "onlyCategories": ["performance", "accessibility", "best-practices", "seo"]
+        "onlyCategories": ["performance", "accessibility", "best-practices", "seo"],
+        "throttlingMethod": "devtools"
       }
     },
     "assert": {
