@@ -13,4 +13,9 @@ describe("Hero", () => {
     render(<Hero />);
     expect(screen.getByText(siteConfig.description)).toBeInTheDocument();
   });
+
+  it("sets the description in the secondary text colour, which passes AA on the page background", () => {
+    render(<Hero />);
+    expect(screen.getByText(siteConfig.description)).toHaveClass("text-foreground-secondary");
+  });
 });

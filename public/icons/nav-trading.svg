@@ -1,0 +1,25 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="25.8742" height="25.8742" viewBox="0 0 25.8742 25.8742" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Trading &#194;&#183; fluid growth">
+<g id="Trading &#194;&#183; fluid growth_2" filter="url(#filter0_ii_0_6)">
+<path d="M2.59705 16.6434C2.59705 13.9121 6.88917 13.1317 7.27937 16.2533L7.66956 21.716C7.66956 24.8375 2.20685 24.8375 2.20685 21.716L2.59705 16.6434ZM10.0107 11.5709C10.0107 8.44938 15.0832 8.44938 15.0832 11.5709L15.4734 21.3258C15.4734 25.2277 9.62053 25.2277 9.62053 21.3258L10.0107 11.5709ZM17.8146 4.54745C17.8146 0.64551 23.2773 0.64551 23.2773 4.54745L23.6675 20.9356C23.6675 25.2277 17.4244 25.2277 17.4244 20.9356L17.8146 4.54745Z" fill-rule="evenodd" clip-rule="evenodd" fill="white"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_ii_0_6" x="2.20685" y="1.21687" width="21.4606" height="23.4799" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="0.444542"/>
+<feGaussianBlur stdDeviation="0.484955"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.68 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_6"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="-0.404129"/>
+<feGaussianBlur stdDeviation="0.444542"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.22 0"/>
+<feBlend mode="normal" in2="effect1_innerShadow_0_6" result="effect2_innerShadow_0_6"/>
+</filter>
+</defs>
+</svg>

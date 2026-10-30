@@ -3,7 +3,21 @@
     "collect": {
       "startServerCommand": "pnpm start",
       "startServerReadyPattern": "Ready",
-      "url": ["http://localhost:3000/"],
+      "url": [
+        "http://localhost:3000/",
+        "http://localhost:3000/home",
+        "http://localhost:3000/payments",
+        "http://localhost:3000/games",
+        "http://localhost:3000/predictions",
+        "http://localhost:3000/portfolio",
+        "http://localhost:3000/trading",
+        "http://localhost:3000/help",
+        "http://localhost:3000/settings",
+        "http://localhost:3000/profile",
+        "http://localhost:3000/notifications",
+        "http://localhost:3000/search",
+        "http://localhost:3000/transactions"
+      ],
       "numberOfRuns": 3,
       "settings": {
         "formFactor": "mobile",
@@ -13,7 +27,8 @@
           "height": 823,
           "deviceScaleFactor": 1.75
         },
-        "onlyCategories": ["performance", "accessibility", "best-practices", "seo"]
+        "onlyCategories": ["performance", "accessibility", "best-practices", "seo"],
+        "throttlingMethod": "devtools"
       }
     },
     "assert": {
