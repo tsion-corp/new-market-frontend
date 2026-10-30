@@ -73,7 +73,8 @@ Signed-in users land on `/home`. It shows the balance (hide and show it with the
   | `/home`           | 98, 98, 98           | 100                                |
   | Every other route | 99 to 100            | 100                                |
   - Under the previous simulated throttling, `/home` scored 92. The ADR explains why.
-  - One earlier full preflight, run during an internet outage, had two `/home` runs at 92 with first paint held until 2.7 s. Every run since the connection returned scored 98 or 99. Watch the CI job for a repeat.
+  - Locally, about one `/home` run in three holds its first paint until 2.7 s and scores 92. No page resource is render blocking, and preloading or not preloading Funnel Display makes no difference. The CI runner has not shown it (three runs at 99). Under investigation.
+  - On the CI runner, the mobile logo was the largest element on the placeholder pages and was lazy loaded, so their LCP was about 2.5 s. The logo now loads eagerly.
   - `/home` passes with a narrow margin.
 
 - Visual check in Chrome with device emulation, against Figma renders at 1440 × 968 and 430 × 1474, and against Plugin API exports at 2× to 4× for the borders and navigation icons.
