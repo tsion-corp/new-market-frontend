@@ -24,4 +24,14 @@ describe("Logo", () => {
       "/images/brand/logo-compact.svg"
     );
   });
+
+  it.each(["full", "compact"] as const)(
+    "loads the %s logo eagerly because it sits above the fold on every page",
+    (variant) => {
+      render(<Logo variant={variant} />);
+      const logo = screen.getByRole("img", { name: siteConfig.name });
+      expect(logo).toHaveAttribute("loading", "eager");
+      expect(logo).not.toHaveAttribute("fetchpriority", "high");
+    }
+  );
 });

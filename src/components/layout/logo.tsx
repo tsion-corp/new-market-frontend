@@ -15,7 +15,13 @@ export function Logo({ variant = "full" }: LogoProps) {
   const logo = LOGOS[variant];
   return (
     <Link href="/home" className="shrink-0">
-      <Image src={logo.src} alt={siteConfig.name} width={logo.width} height={logo.height} />
+      <Image
+        src={logo.src}
+        alt={siteConfig.name}
+        width={logo.width}
+        height={logo.height}
+        loading="eager"
+      />
     </Link>
   );
 }
