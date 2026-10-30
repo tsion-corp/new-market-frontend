@@ -1,7 +1,7 @@
 # ADR-2026-10-30: A 30 minute limit for the Lighthouse CI job
 
 - **Status:** Accepted
-- **Approved by:** (MarkDavid, 29 Oct 2026; filled in by the maintainer)
+- **Approved by:** (MarkDavid, 30 Oct 2026; filled in by the maintainer)
 - **Companion:** [ADR-2026-10-30-lighthouse-ci-timeout-for-dummies.md](ADR-2026-10-30-lighthouse-ci-timeout-for-dummies.md)
 
 ## Context
