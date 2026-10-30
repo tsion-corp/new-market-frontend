@@ -43,6 +43,6 @@ Code, files, config and packages this PR deletes.
 
 ## How this was verified
 
-What you ran and what you clicked, in light and dark mode, on a phone-sized screen.
+What you ran and what you clicked, on a phone-sized screen.
 
 ## Screenshots

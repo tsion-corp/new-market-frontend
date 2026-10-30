@@ -1,4 +1,4 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["src/lib/utils.ts", "open-next.config.ts"]
+  "entry": ["src/lib/utils.ts", "open-next.config.ts", "scripts/optimize-images.mjs"]
 }

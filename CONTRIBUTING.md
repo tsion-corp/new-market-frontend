@@ -139,7 +139,7 @@ Feature branches are named `<type>/<short-description>`, using the same types as
    ```
 5. **Build test-first.** For a bug, write the failing test before the fix.
 6. **Remove what you replace.** Old components, styles, assets, config and packages go in the same change.
-7. **Verify.** Run `pnpm preflight`, then use the change in the browser, in light and dark mode, on a phone-sized viewport.
+7. **Verify.** Run `pnpm preflight`, then use the change in the browser on a phone-sized viewport.
 8. **Document.** Add a release note in `docs/release-notes/` from the template, and fix any doc your change made wrong.
 9. **Open the pull request** against the branch you cut from.
 
@@ -166,7 +166,7 @@ Keep commits atomic: one logical change each. AI tools never co-author a commit:
 
 - Fill in every section of the template. Unticked boxes need a reason.
 - Keep the PR to the scope of its issue. Unrelated fixes get their own PR.
-- Include screenshots or a short recording for any UI change, light and dark.
+- Include screenshots or a short recording for any UI change.
 - Include the Lighthouse result for every route the change touches.
 - The `quality` check must be green. If the base branch moved, update your branch and let CI run again.
 - Feature pull requests are squash-merged into `dev` and the branch is deleted. Promotions use a merge commit.
@@ -208,7 +208,7 @@ pnpm dlx shadcn@latest add @vengeanceui/<component>    # Vengeance UI component
 ```
 
 - Add a component in the PR that first uses it.
-- Theme values live in `src/app/globals.css` (the `--vng-*` tokens and the `.dark` block). Change colours there, never in components.
+- Theme values live in `src/app/globals.css` (the design tokens in the `:root` block). Change colours there, never in components.
 - Merge classes with `cn` from `@/lib/utils`.
 - Motion components pull in `framer-motion`; load them with `LazyMotion` and respect reduced motion (see the standards).
 

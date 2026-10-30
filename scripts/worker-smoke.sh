@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PORT="${SMOKE_PORT:-8799}"
-ROUTES=("/" "/robots.txt" "/sitemap.xml")
+ROUTES=("/" "/robots.txt" "/sitemap.xml" "/home" "/payments" "/games" "/predictions" "/portfolio" "/trading" "/help" "/settings" "/profile" "/notifications" "/search" "/transactions")
 LOG="$(mktemp)"
 
 pnpm exec wrangler dev --port "$PORT" --env staging >"$LOG" 2>&1 &

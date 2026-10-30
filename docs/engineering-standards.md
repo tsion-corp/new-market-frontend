@@ -127,12 +127,12 @@ How to write one:
 ## Styling and UI kit
 
 - Tailwind CSS v4 only, configured in `src/app/globals.css`. No CSS-in-JS, no inline `style` except for values computed at runtime.
-- Use theme tokens (`bg-background`, `text-muted-foreground`, `--vng-*`), never raw hex values in components. Change the palette in `globals.css`, in one place.
+- Use theme tokens (`bg-background`, `text-muted-foreground`, `bg-surface`), never raw hex values in components. Change the palette in `globals.css`, in one place.
 - Merge classes with `cn` from `@/lib/utils`. Never concatenate class strings by hand.
 - Variants use `cva`, defined once beside the component.
 - UI primitives come from shadcn (`pnpm dlx shadcn@latest add <name>`) and [Vengeance UI](https://www.vengenceui.com) (`pnpm dlx shadcn@latest add @vengeanceui/<name>`). Add a component the day a feature uses it, not before. Generated components may be edited; record why in the PR.
 - Motion: Vengeance components use `framer-motion`. Load it with `LazyMotion` and the `m` component so only the features used are shipped, and respect `prefers-reduced-motion` (`useReducedMotion`). Animate `transform` and `opacity` only.
-- Dark mode uses the `.dark` class and the `.dark` token block. Every component works in both.
+- The app has one dark theme, defined in the `:root` token block of `globals.css`. There is no light theme and no `.dark` class; adding a light theme needs an ADR and a design.
 
 ## Performance and Lighthouse
 
@@ -153,7 +153,7 @@ Every page scores **98 to 100 in Performance, Accessibility, Best Practices and 
 - Semantic HTML first: `button` for actions, `a` for navigation, one `h1` per page, headings in order, landmarks (`header`, `main`, `nav`, `footer`).
 - Every interactive element works with a keyboard and has a visible focus style.
 - Every input has a label; icons that act as buttons have an accessible name.
-- Text contrast meets WCAG AA in light and dark themes.
+- Text contrast meets WCAG AA.
 - Respect `prefers-reduced-motion`.
 - `jsx-a11y` lint rules stay on.
 

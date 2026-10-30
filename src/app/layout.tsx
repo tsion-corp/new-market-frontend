@@ -1,6 +1,31 @@
 import type { Metadata, Viewport } from "next";
+import { Funnel_Display, Funnel_Sans, Mona_Sans } from "next/font/google";
 import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
 import "./globals.css";
+
+const funnelDisplay = Funnel_Display({
+  subsets: ["latin"],
+  weight: "variable",
+  display: "swap",
+  variable: "--font-funnel-display",
+});
+
+const monaSans = Mona_Sans({
+  subsets: ["latin"],
+  weight: "600",
+  display: "swap",
+  preload: false,
+  variable: "--font-mona-sans",
+});
+
+const funnelSans = Funnel_Sans({
+  subsets: ["latin"],
+  weight: "500",
+  display: "swap",
+  preload: false,
+  variable: "--font-funnel-sans",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -18,15 +43,21 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
-  ],
+  themeColor: "#050606",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html
+      lang="en"
+      className={cn(
+        "h-full antialiased",
+        funnelDisplay.variable,
+        monaSans.variable,
+        funnelSans.variable
+      )}
+    >
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );

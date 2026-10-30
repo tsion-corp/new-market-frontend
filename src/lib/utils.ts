@@ -1,1 +1,57 @@
-export { cn } from "cn";
+import { createCn } from "cn/config";
+
+const FONT_SIZES = [
+  "nav",
+  "search",
+  "hero-title",
+  "hero-subtitle",
+  "currency",
+  "currency-mobile",
+  "balance-label",
+  "balance-label-mobile",
+  "balance-amount",
+  "balance-amount-mobile",
+  "wallet-button",
+  "wallet-button-mobile",
+  "list-heading",
+  "row-title",
+  "row-caption",
+  "row-amount",
+  "action-link",
+  "section-title",
+  "section-title-mobile",
+  "question",
+  "question-mobile",
+  "outcome",
+  "outcome-mobile",
+  "game-title",
+  "game-title-mobile",
+  "game-description",
+  "game-description-mobile",
+  "play",
+  "play-mobile",
+  "bottom-nav",
+];
+
+const RADII = [
+  "panel",
+  "section",
+  "sunken-panel",
+  "balance-card",
+  "balance-card-mobile",
+  "card",
+  "card-mobile",
+  "card-media",
+  "card-media-mobile",
+  "outcome",
+  "outcome-mobile",
+  "nav-item",
+  "nav-item-active",
+  "search",
+  "carousel-prev",
+  "carousel-next",
+];
+
+export const cn = createCn({
+  extend: { theme: { text: FONT_SIZES, radius: RADII } },
+});

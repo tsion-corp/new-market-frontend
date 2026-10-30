@@ -12,7 +12,7 @@ export function Hero() {
       >
         {siteConfig.name}
       </h1>
-      <p className="max-w-xl text-lg text-muted-foreground">{siteConfig.description}</p>
+      <p className="max-w-xl text-lg text-foreground-secondary">{siteConfig.description}</p>
     </section>
   );
 }
